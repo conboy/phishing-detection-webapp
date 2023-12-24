@@ -2,6 +2,6 @@ from fastapi import FastAPI
 
 app = FastAPI()
 
-@app.get("/api/python")
-def hello_world():
+@app.post("/api")
+def parse_email():
     return {"message": "Hello World"}
