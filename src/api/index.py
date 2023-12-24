@@ -7,6 +7,10 @@ class Email(BaseModel):
 
 app = FastAPI()
 
+@app.get("/api/python")
+def hello_world():
+    return {"message": "Hello World"}
+
 @app.post("/api/process_email")
 def process_email(email: Email):
     email_text = email.email_text
