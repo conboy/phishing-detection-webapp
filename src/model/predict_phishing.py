@@ -4,16 +4,10 @@ from openai import OpenAI
 # Function that returns probability of email being a phishing attack
 def predict_phishing(email_text):
     # Load the phishing logistic regression model
-    log_reg_model = load('log_reg_model.joblib')
+    log_reg_model = load('model/log_reg_model.joblib')
 
     # Load the vectorizer to vectorize incoming emails
-    tfidf_vectorizer = load('tfidf_vectorizer.joblib')
-
-    # Load the phishing logistic regression model
-    log_reg_model = load('log_reg_model.joblib')
-
-    # Load the vectorizer to vectorize incoming emails
-    tfidf_vectorizer = load('tfidf_vectorizer.joblib')
+    tfidf_vectorizer = load('model/tfidf_vectorizer.joblib')
 
     # Vectorize email text so log reg model can interpret
     transformed_email = tfidf_vectorizer.transform([email_text])
@@ -23,9 +17,6 @@ def predict_phishing(email_text):
     return phishing_probability
 
 def analyze_email(email_text):
-    if predict_phishing(email_text) < 0.5:
-        return "Not a phishing email"
-    print("Phishing email detected! Analyzing email...")
     client = OpenAI()
     completion = client.chat.completions.create(
         model="gpt-3.5-turbo",
@@ -38,10 +29,10 @@ def analyze_email(email_text):
 
 
 
-# Sample safe email prediction
-prediction = analyze_email("Dear Zach, I hope this email finds you well. I am writing to request a meeting to discuss [specific topic or project]. I believe a face-to-face discussion would be the most effective way to address [specific points or objectives]. Could we schedule a meeting for next week at your convenience? Please let me know your available times, and I'll do my best to accommodate. Thank you for considering my request. I look forward to our discussion. Best regards, Conrad")
-print(prediction)
+# # Sample safe email prediction
+# prediction = analyze_email("Dear Zach, I hope this email finds you well. I am writing to request a meeting to discuss [specific topic or project]. I believe a face-to-face discussion would be the most effective way to address [specific points or objectives]. Could we schedule a meeting for next week at your convenience? Please let me know your available times, and I'll do my best to accommodate. Thank you for considering my request. I look forward to our discussion. Best regards, Conrad")
+# print(prediction)
 
-# Sample phishing email predication
-prediction = analyze_email("Dear Valued Customer, We have detected unusual activity on your account and require you to verify your information immediately to prevent your account from being suspended. This is for your protection due to a breach in our security system. Please click on the link below to confirm your account details: cobc.com Failure to verify your account within 24 hours of receiving this email will result in account suspension for security reasons. We apologize for any inconvenience and appreciate your prompt attention to this matter. Best Regards, CIBC Security Team Note: Do not ignore this message to avoid account suspension.")
-print(prediction)
+# # Sample phishing email predication
+# prediction = analyze_email("Dear Valued Customer, We have detected unusual activity on your account and require you to verify your information immediately to prevent your account from being suspended. This is for your protection due to a breach in our security system. Please click on the link below to confirm your account details: cobc.com Failure to verify your account within 24 hours of receiving this email will result in account suspension for security reasons. We apologize for any inconvenience and appreciate your prompt attention to this matter. Best Regards, CIBC Security Team Note: Do not ignore this message to avoid account suspension.")
+# print(prediction)
